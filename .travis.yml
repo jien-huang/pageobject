@@ -1,0 +1,19 @@
+dist: trusty
+sudo: false
+
+language: node_js
+node_js:
+  - '12'
+
+install:
+  - npm install -g @angular/cli
+
+
+script:
+  - npm ci
+  - ng build --prod
+
+after_success:
+- echo 'push to store'
+on:
+  branch: master
