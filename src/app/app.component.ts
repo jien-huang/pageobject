@@ -14,6 +14,7 @@ export class AppComponent {
 
   save_options() {
     alert("you click the save options button");
+    localStorage.setItem('page_objects_header', 'test content')
   }
 
   download_framework() {
