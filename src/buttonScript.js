@@ -5,10 +5,6 @@ function captureFunction() {
     var _name = classname.value.trim()
 
     chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-        if (tabs[0].url.toLowerCase().indexOf('ibm.com')< 0){
-            alert('This extension works for ibm.com only!')
-            return
-        }
         chrome.tabs.sendMessage(tabs[0].id, {type:"get", name: _name}, function(response){
         if(!response) {
             alert('We got nothing from your browser, please check.')
