@@ -6,8 +6,7 @@ var default_header = `
 *
 */
 /* eslint-disable class-methods-use-this */
-import { Page, PageObject } from \'@spm/test-framework\';
-import CEUtils from \'../utils/CEUtils\';
+
 
 `
     var constructor_string = `
