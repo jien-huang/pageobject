@@ -1,18 +1,12 @@
 var default_header = `
 /*
-* Licensed Materials - Property of IBM
-*
-* Copyright IBM Corporation 2019. All Rights Reserved.
-*
-* US Government Users Restricted Rights - Use, duplication or disclosure
-* restricted by GSA ADP Schedule Contract with IBM Corp.
+* Licensed Materials - <put your license info here>
 *
 * Automatically generated at: _TIMESTAMP_
 *
 */
 /* eslint-disable class-methods-use-this */
-import { Page, PageObject } from \'@spm/test-framework\';
-import CEUtils from \'../utils/CEUtils\';
+
 
 `
     var constructor_string = `
@@ -39,11 +33,12 @@ export default class _CLASS_NAME_ extends PageObject {
   }
 `
 var default_tail = ''
+var header = 'page_objects_header'
 
 function save_options() {
   var header_text = document.getElementById('header').value;
   chrome.storage.sync.set({
-    header: header_text
+    'page_objects_header': header_text
   }, function() {
 
     var status = document.getElementById('status');
@@ -55,10 +50,11 @@ function save_options() {
 }
 
 function restore_options() {
-  chrome.storage.sync.get({
-    header: default_header
-  }, function(items) {
-    document.getElementById('header').value = items.header;
+  chrome.storage.sync.get('page_objects_header', function(result) {
+    if(!result){
+      result = default_header
+    }
+    document.getElementById('header').value = result.page_objects_header;
   });
 }
 document.addEventListener('DOMContentLoaded', restore_options);
