@@ -5,13 +5,9 @@ chrome.runtime.onMessage.addListener(
             var _name = request.name
             var _final_name = getName(_name)
             get(_final_name).then(function(_final_name, result){
-
                 console.log(result)
                 sendResponse({content: result, name: _final_name })
             })
-
-
-
         }
     }
 );

@@ -7,9 +7,8 @@
   "icons": {
     "16": "assets/Page16.png",
     "48": "assets/Page32.png",
-    "128": "assets/Page128.png"
+    "128":"assets/Page128.png"
   },
-  "options_page": "options.html",
   "browser_action": {
     "default_icon": "assets/Page19.png",
     "default_title": "capture page objects",
@@ -17,6 +16,7 @@
   },
   "permissions": [
     "clipboardWrite",
+    "contextMenus",
     "storage",
     "http://*/*",
     "https://*/*",
