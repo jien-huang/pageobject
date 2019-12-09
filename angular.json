@@ -23,6 +23,7 @@
               "src/favicon.ico",
               "src/assets",
               "src/inject.js",
+              "src/background.js",
               "src/options.html",
               "src/options.js",
               "src/manifest.json"

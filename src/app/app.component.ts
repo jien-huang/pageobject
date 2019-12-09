@@ -9,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AppComponent implements OnInit {
   title = 'Page Objects';
-  count = 1;
+  count = 0;
 
   ngOnInit() {
     this.set_badge();
@@ -35,6 +35,11 @@ export class AppComponent implements OnInit {
   }
 
   set_badge() {
-    chrome.browserAction.setBadgeText({text: this.count.toString()});
+    if(this.count === 0) {
+      chrome.browserAction.setBadgeText({text:''});
+    } else {
+      chrome.browserAction.setBadgeText({text: this.count.toString()});
+    }
+    
   }
 }
