@@ -16,9 +16,18 @@ export class AppComponent implements OnInit {
   }
 
   download_page_objects() {
-    alert('you click the down page objects button');
+    this.notify('Download','Page Objects Downloaded');
     this.count ++ ;
     this.set_badge();
+  }
+
+  private notify(_title: string, _message: string) {
+    chrome.notifications.create(null, {
+      type: 'basic',
+      iconUrl: 'assets/Page32.png',
+      title: _title,
+      message: _message
+    });
   }
 
   save_options() {

@@ -42,7 +42,7 @@ function removeRandomValueInString(original_string) {
 function getHeader() {
     return new Promise(resolve => {
         chrome.storage.sync.get(['header'], function(ret) {
-//            console.log('in function->\n' + ret.header)
+            console.log('in function->\n' + ret.header)
             return(ret.header);
         });
     });
