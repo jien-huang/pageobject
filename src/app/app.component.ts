@@ -51,4 +51,10 @@ export class AppComponent implements OnInit {
     }
     
   }
+
+  // communicate with background.js, one way
+  // notify_background(info) {
+  //   var bg = chrome.extension.getBackgroundPage();
+  //   bg.notify_from_popup(info);
+  // }
 }
