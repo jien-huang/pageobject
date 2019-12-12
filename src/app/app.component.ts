@@ -16,23 +16,27 @@ export class AppComponent implements OnInit {
   }
 
   download_page_objects() {
-    this.notify('Download','Page Objects Downloaded');
-    this.count ++ ;
+    this.notify('Download', 'Page Objects Downloaded');
+    this.count++;
     this.set_badge();
   }
 
-  private notify(_title: string, _message: string) {
+  private notify(tle: string, msg: string) {
     chrome.notifications.create(null, {
       type: 'basic',
       iconUrl: 'assets/Page32.png',
-      title: _title,
-      message: _message
+      title: tle,
+      message: msg
     });
   }
 
   save_options() {
     alert('you click the save options button');
-    chrome.storage.sync.set({page_objects_header: 'test content'});
+    chrome.storage.sync.set({ page_objects_header: 'test content' });
+  }
+
+  load_options() {
+    chrome.storage.sync.get()
   }
 
   download_framework() {
@@ -44,12 +48,11 @@ export class AppComponent implements OnInit {
   }
 
   set_badge() {
-    if(this.count === 0) {
-      chrome.browserAction.setBadgeText({text:''});
+    if (this.count === 0) {
+      chrome.browserAction.setBadgeText({ text: '' });
     } else {
-      chrome.browserAction.setBadgeText({text: this.count.toString()});
+      chrome.browserAction.setBadgeText({ text: this.count.toString() });
     }
-    
   }
 
   // communicate with background.js, one way
