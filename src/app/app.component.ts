@@ -1,8 +1,6 @@
 /// <reference types="@types/chrome" />
 import { Component, OnInit } from '@angular/core';
 
-const key = 'page_object';
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -34,16 +32,16 @@ export class AppComponent implements OnInit {
   }
 
   save_options() {
-    chrome.storage.sync.set({ key: this.options });
+    chrome.storage.sync.set({ 'page_object': this.options });
     this.notify('Options Saved', JSON.stringify(this.options));
   }
 
   load_options() {
-    chrome.storage.sync.get(key, (obj) => {
-      if (!obj[key]) {
-        chrome.storage.sync.set({ key: this.options });
+    chrome.storage.sync.get('page_object', (obj) => {
+      if (!obj['page_object']) {
+        chrome.storage.sync.set({ 'page_object': this.options });
       } else {
-        this.options = obj[key];
+        this.options = obj['page_object'];
       }
       // TODO why it says this is not a method?
       this.notify('Options Loaded', JSON.stringify(this.options));
