@@ -21,6 +21,7 @@
     "clipboardWrite",
     "contextMenus",
     "storage",
+    "notifications",
     "http://*/*",
     "https://*/*",
     "tabs"
@@ -28,8 +29,9 @@
   "content_scripts": [
     {
       "matches": [
-        "https://www.google.com/*"
+        "<all_urls>"
       ],
+      "run_at": "document_start",
       "js": [
         "inject.js"
       ]

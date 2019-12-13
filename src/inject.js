@@ -1,34 +1,58 @@
 
 chrome.runtime.onMessage.addListener(
-    function(request, sender, sendResponse){
-        if(request.type === 'get') {
-            var _name = request.name
-            var _final_name = getName(_name)
-            get(_final_name).then(function(_final_name, result){
-                console.log(result)
-                sendResponse({content: result, name: _final_name })
-            })
+    function (request, sender, sendResponse) {
+        if (request.type === 'get') {
+            sendResponse({ content: 'OK' })
+            // after everything, count how many pages we got
+            getPageObjects()
         }
     }
 );
 
+/*
+    consider store page objects in local storage, because sync has 102K size limit, while local is 5.2M
+    all page objects will looks like below
+    {
+        pages: [
+            {'name':'generatedPageName', 'captureAt':'dateTimeStamp', 'url':'https://.....' 'objects': [
+                {'type':'button', 'text':'OK', 'id':'confirm', 'name':'confirm', 'special-id':'xxx'},
+                {'type':'input', 'value':'first name', ...}
+                {'type':'select', 'selected':'chosen value', options:['xxxx','xxx','xx']}
+            ]}
+        ]
+    }
+
+*/
+
+async function getPageObjects() {
+    chrome.storage.sync.get('page_object', (data) => {
+        options = data['page_object'];
+        console.log(options);
+        //now we have the options, begin to capture objects
+
+        // end of capture, write to storage
+
+        // count the storage, send number to background
+        count = 10
+        chrome.runtime.sendMessage({'count': count.toString()});
+    });
+}
+
 function getName(className) {
-    if(className && className.length > 0) {
+    if (className && className.length > 0) {
         return className
     }
     var _url = window.location.pathname
     var str_array = _url.split('/')
-    var _className =''
-    for(var i=0;i<str_array.length;i++){
-        if(str_array[i]==='universal'){
-            continue
-        }
-        if(str_array[i].length === 0){
+    var _className = ''
+    for (var i = 0; i < str_array.length; i++) {
+        //TODO consider add a list of can_be_ignored words here
+        if (str_array[i].length === 0) {
             continue
         }
         _className = _className + str_array[i].charAt(0).toUpperCase() + str_array[i].slice(1);
     }
-    return removeRandomNumberInString(_className)+'Page'
+    return removeRandomNumberInString(_className) + 'Page'
 }
 
 function removeRandomNumberInString(original_string) {
@@ -36,24 +60,14 @@ function removeRandomNumberInString(original_string) {
 }
 
 function removeRandomValueInString(original_string) {
-    return original_string.replace(/(\w+[_,-])+[_,-]*[0-9]+_/,'').replace(/-/g, '_').replace(/\./, '_')
-}
-
-function getHeader() {
-    return new Promise(resolve => {
-        chrome.storage.sync.get(['header'], function(ret) {
-//            console.log('in function->\n' + ret.header)
-            return(ret.header);
-        });
-    });
+    return original_string.replace(/(\w+[_,-])+[_,-]*[0-9]+_/, '').replace(/-/g, '_').replace(/\./, '_')
 }
 
 async function get(className) {
 
     var result = ''
-    result = await getHeader()
-
-//    console.log('result->\n' + result)
+    
+    //    console.log('result->\n' + result)
     var constructor_string = `
 /**
  * Interface for executing automated actions on the applications IEG scripts
@@ -80,7 +94,7 @@ export default class _CLASS_NAME_ extends PageObject {
 `
     var current = new Date().toLocaleString()
     result = result.replace('_TIMESTAMP_', current)
-    result += 'const url = \''+ removeRandomNumberInString(window.location.pathname) + '\'\n'
+    result += 'const url = \'' + removeRandomNumberInString(window.location.pathname) + '\'\n'
 
     var _className = getName(className)
     constructor_string = constructor_string.replace('_CLASS_NAME_', _className)
@@ -119,7 +133,7 @@ export default class _CLASS_NAME_ extends PageObject {
     }
 
     var selects = document.getElementsByTagName('select')
-    if (selects.length >0) {
+    if (selects.length > 0) {
         constructor_string = constructor_string.replace('_SELECTLIST_', 'selectList')
         result += 'const selectList = {\n'
 
@@ -139,7 +153,7 @@ export default class _CLASS_NAME_ extends PageObject {
     }
 
     var inputs = document.getElementsByTagName('input')
-    if (inputs.length >0) {
+    if (inputs.length > 0) {
         constructor_string = constructor_string.replace('_CLEARANDINPUTLIST_', 'clearAndTypeTextList')
         result += 'const clearAndTypeTextList = {\n'
 
@@ -157,7 +171,7 @@ export default class _CLASS_NAME_ extends PageObject {
         constructor_string = constructor_string.replace('_TYPETEXTLIST_', 'undefined')
     }
 
-    if (inputs.length >0) {
+    if (inputs.length > 0) {
         constructor_string = constructor_string.replace('_GETVALUELIST_', 'getValueList')
         result += 'const getValueList = {\n'
 
@@ -169,7 +183,7 @@ export default class _CLASS_NAME_ extends PageObject {
     }
 
     var textContents = document.getElementsByTagName('label')
-    if (textContents.length >0) {
+    if (textContents.length > 0) {
         constructor_string = constructor_string.replace('_GETTEXTCONTENTLIST_', 'getTextContentList')
         result += 'const getTextContentList = {\n'
 
@@ -187,24 +201,24 @@ export default class _CLASS_NAME_ extends PageObject {
 
 function handleVisibleElements(items) {
     var ret = ""
-    for(var i=0; i< items.length; i++){
+    for (var i = 0; i < items.length; i++) {
         var tag = items[i].tagName
-        if (!tag){
+        if (!tag) {
             console.log('very strange!', items[i])
         }
-        if( items[i].style.visibility == 'none' || items[i].style.visibility == 'hidden'){
+        if (items[i].style.visibility == 'none' || items[i].style.visibility == 'hidden') {
             continue
         }
-        if (tag && (tag === 'A' || tag ==='LABEL')){
+        if (tag && (tag === 'A' || tag === 'LABEL')) {
             var text = items[i].textContent
-            if(text && text.length > 0) {
-                ret += '\tlink_' + text.replace(/\s/g,'') + ' : Selector(\'' + tag +'\').withText(\'' +  text +'\')\n'
+            if (text && text.length > 0) {
+                ret += '\tlink_' + text.replace(/\s/g, '') + ' : Selector(\'' + tag + '\').withText(\'' + text + '\')\n'
             }
         }
         if (items[i].hasAttribute('data-testid')) {
             var testid = items[i].getAttribute('data-testid').toString()
             testid = removeRandomValueInString(testid)
-            ret += '\t' + testid + ' : ' + '\''+ tag +'[data-testid*="' + testid + '"]\'\n'
+            ret += '\t' + testid + ' : ' + '\'' + tag + '[data-testid*="' + testid + '"]\'\n'
         }
 
     }
@@ -213,19 +227,19 @@ function handleVisibleElements(items) {
 
 function handleElements(items, _type) {
     var ret = ""
-    for(var i=0; i< items.length; i++){
+    for (var i = 0; i < items.length; i++) {
         var tag = items[i].tagName
-        if (!tag){
+        if (!tag) {
             console.log('very strange!', items[i])
         }
         var itemType = items[i].getAttribute('type').toString()
-        if(itemType != _type){
+        if (itemType != _type) {
             continue
         }
         if (items[i].hasAttribute('data-testid')) {
             var testid = items[i].getAttribute('data-testid').toString()
             testid = removeRandomValueInString(testid)
-            ret += '\t' + testid + ' : ' + '\''+ tag +'[data-testid*="' + testid + '"]\'\n'
+            ret += '\t' + testid + ' : ' + '\'' + tag + '[data-testid*="' + testid + '"]\'\n'
         }
 
     }
@@ -234,25 +248,26 @@ function handleElements(items, _type) {
 
 function handleElements(items) {
     var ret = ""
-    for(var i=0; i< items.length; i++){
+    for (var i = 0; i < items.length; i++) {
         var tag = items[i].tagName
-        if (!tag){
+        if (!tag) {
             console.log('very strange!', items[i])
         }
-        if (tag && (tag === 'A'|| tag ==='LABEL')){
+        if (tag && (tag === 'A' || tag === 'LABEL')) {
             var text = items[i].textContent
             var _type = 'link'
-            if (tag === 'LABEL'){
+            if (tag === 'LABEL') {
                 _type = 'text'
             }
-            if(text && text.length > 0) {
-                ret += '\t' + _type + '_' + text.replace(/\s/g,'') + ' : Selector(\''+ tag +'\').withText(\'' +  text +'\')\n'
+            if (text && text.length > 0) {
+                ret += '\t' + _type + '_' + text.replace(/\s/g, '') + ' : Selector(\'' + tag + '\').withText(\'' + text + '\')\n'
             }
         }
+        // TODO: handle special attributes
         if (items[i].hasAttribute('data-testid')) {
             var testid = items[i].getAttribute('data-testid').toString()
             testid = removeRandomValueInString(testid)
-            ret += '\t' + testid + ' : ' + '\''+ tag +'[data-testid*="' + testid + '"]\'\n'
+            ret += '\t' + testid + ' : ' + '\'' + tag + '[data-testid*="' + testid + '"]\'\n'
         }
 
     }
