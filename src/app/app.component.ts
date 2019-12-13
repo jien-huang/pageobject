@@ -40,7 +40,6 @@ export class AppComponent implements OnInit {
 
   load_options() {
     chrome.storage.sync.get(key, (obj) => {
-      console.log(this.options);
       if (!obj[key]) {
         chrome.storage.sync.set({ key: this.options });
       } else {

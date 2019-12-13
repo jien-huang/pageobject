@@ -1,10 +1,14 @@
+const key = 'page_object';
+var options;
+
 
 chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
-        console.log(request)
         if (request.type === 'get') {
 
             // after everything, count how many pages we got
+            getOptions()
+            console.log(options)
             sendResponse({ content: '9' })
             // var _name = request.name
             // var _final_name = getName(_name)
@@ -16,6 +20,14 @@ chrome.runtime.onMessage.addListener(
         return true;
     }
 );
+
+function getOptions() {
+    chrome.storage.sync.get([key], (data) => {
+        options = data
+        console.log(options)
+    });
+    console.log(options)
+}
 
 function getName(className) {
     if (className && className.length > 0) {
