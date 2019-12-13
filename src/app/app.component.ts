@@ -1,6 +1,7 @@
 /// <reference types="@types/chrome" />
 import { Component, OnInit } from '@angular/core';
 
+const key = 'page_object';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +11,7 @@ import { Component, OnInit } from '@angular/core';
 export class AppComponent implements OnInit {
   title = 'Page Objects';
   count = 0;
-  options: any;
+  options = [{ header: '// This is a header' }, { types: 'a,input,button,submit' }, { style: 'helper' }];
 
   ngOnInit() {
     this.set_badge();
@@ -23,7 +24,7 @@ export class AppComponent implements OnInit {
     this.set_badge();
   }
 
-  private notify(tle: string, msg: string) {
+  notify(tle: string, msg: string) {
     chrome.notifications.create(null, {
       type: 'basic',
       iconUrl: 'assets/Page32.png',
@@ -33,23 +34,21 @@ export class AppComponent implements OnInit {
   }
 
   save_options() {
-    chrome.storage.sync.set({ page_objects_header: JSON.stringify(this.options) });
+    chrome.storage.sync.set({ key: this.options });
     this.notify('Options Saved', JSON.stringify(this.options));
   }
 
   load_options() {
-    chrome.storage.sync.get('page_objects_options', function(obj){
-      console.log(obj.value);
-      if(!obj.value){
-        this.options = [{header: 'This is a header'}, {types: 'a,input,button,submit'}]
-        console.log(JSON.stringify(this.options))
-        chrome.storage.sync.set({ page_objects_header: JSON.stringify(this.options) });
-        console.log('after save')
+    chrome.storage.sync.get(key, (obj) => {
+      console.log(this.options);
+      if (!obj[key]) {
+        chrome.storage.sync.set({ key: this.options });
       } else {
-        this.options = JSON.parse(obj.value);
+        this.options = obj[key];
       }
-      
-    })
+      // TODO why it says this is not a method?
+      this.notify('Options Loaded', JSON.stringify(this.options));
+    });
   }
 
   download_framework() {
