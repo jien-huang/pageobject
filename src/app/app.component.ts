@@ -10,9 +10,11 @@ import { Component, OnInit } from '@angular/core';
 export class AppComponent implements OnInit {
   title = 'Page Objects';
   count = 0;
+  options: any;
 
   ngOnInit() {
     this.set_badge();
+    this.load_options();
   }
 
   download_page_objects() {
@@ -31,12 +33,23 @@ export class AppComponent implements OnInit {
   }
 
   save_options() {
-    alert('you click the save options button');
-    chrome.storage.sync.set({ page_objects_header: 'test content' });
+    chrome.storage.sync.set({ page_objects_header: JSON.stringify(this.options) });
+    this.notify('Options Saved', JSON.stringify(this.options));
   }
 
   load_options() {
-    chrome.storage.sync.get()
+    chrome.storage.sync.get('page_objects_options', function(obj){
+      console.log(obj.value);
+      if(!obj.value){
+        this.options = [{header: 'This is a header'}, {types: 'a,input,button,submit'}]
+        console.log(JSON.stringify(this.options))
+        chrome.storage.sync.set({ page_objects_header: JSON.stringify(this.options) });
+        console.log('after save')
+      } else {
+        this.options = JSON.parse(obj.value);
+      }
+      
+    })
   }
 
   download_framework() {

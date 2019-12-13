@@ -6,7 +6,7 @@
   <mat-menu #main="matMenu">
     <button mat-menu-item (click)="download_page_objects()">Download Page Objects</button>
     <button mat-menu-item (click)="save_options()">Save Options</button>
-    <button mat-menu-item (click)="download_framework()">Download Framework</button>
+    <button mat-menu-item (click)="load_options()">Download Framework</button>
     <button mat-menu-item (click)="to_my_home()">About</button>
   </mat-menu>
   <span>Welcome</span>
@@ -30,6 +30,6 @@
       <!-- <mat-icon (click)="save_options()">save</mat-icon> -->
       Options
     </ng-template>
-    Content 2
+    <pre>{{options | json}}</pre>
   </mat-tab>
 </mat-tab-group>
