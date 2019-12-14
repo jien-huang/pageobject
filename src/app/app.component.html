@@ -30,6 +30,59 @@
       <!-- <mat-icon (click)="save_options()">save</mat-icon> -->
       Options
     </ng-template>
-    <pre> {{options | json}} </pre>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Manage Options
+        </mat-panel-title>
+        <mat-panel-description>
+          <Label>Add, Delete, Update, Save, Load Options</Label>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <mat-form-field>
+        <input matInput placeholder="Name" [(ngModel)]="new_name">
+        <button mat-button *ngIf="new_name" matSuffix mat-icon-button aria-label="Clear" (click)="new_name=''">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <mat-form-field>
+        <textarea matInput placeholder="Value" cdkTextareaAutosize
+        #autosize="cdkTextareaAutosize"
+        cdkAutosizeMinRows="1" [(ngModel)]="new_value"></textarea>
+        <button mat-button *ngIf="new_value" matSuffix mat-icon-button aria-label="Clear" (click)="new_value=''">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+      <mat-action-row>
+        <button mat-button color="primary" [disabled]="!new_name && !new_value" (click)="add_new_option()">Add</button>
+
+        <button mat-button color="accent" (click)="save_options()">Save</button>
+        <button mat-button color="warn" (click)="load_options()">Reload</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+    <mat-divider></mat-divider>
+    <mat-accordion>
+      <mat-list class="card-container">
+        <mat-list-item class="card-content" *ngFor="let option of options">
+          <mat-form-field>
+            <input matInput placeholder="Name" value="{{option.name}}">
+          </mat-form-field>
+
+          <mat-form-field>
+            
+            <textarea matInput placeholder="Value" value="{{option.value}}" cdkTextareaAutosize
+            #autosize="cdkTextareaAutosize"
+            cdkAutosizeMinRows="1"></textarea>
+            
+          </mat-form-field>
+          <button mat-button color="accent" (click)="update_option()">Update</button>
+          <button mat-button color="warn" (click)="delete_option()">Delete</button>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+      </mat-list>
+    </mat-accordion>
+
   </mat-tab>
 </mat-tab-group>

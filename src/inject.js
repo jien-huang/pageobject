@@ -26,6 +26,7 @@ chrome.runtime.onMessage.addListener(
 
 async function getPageObjects() {
     chrome.storage.sync.get('page_object', (data) => {
+        // TODO: what if there is no options stored in this browser? how could this happen? maybe first time?
         options = data['page_object'];
         console.log(options);
         //now we have the options, begin to capture objects
@@ -33,6 +34,9 @@ async function getPageObjects() {
         // end of capture, write to storage
 
         // count the storage, send number to background
+        chrome.storage.local.get('pages', (all_pages) => {
+
+        })
         count = 10
         chrome.runtime.sendMessage({'count': count.toString()});
     });

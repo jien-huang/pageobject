@@ -9,7 +9,13 @@ import { Component, OnInit } from '@angular/core';
 export class AppComponent implements OnInit {
   title = 'Page Objects';
   count = 0;
-  options = [{ header: '// This is a header' }, { types: 'a,input,button,submit' }, { style: 'helper' }];
+  new_name = '';
+  new_value = '';
+  options = [
+    { name: 'header', value: '// This is a header' },
+    { name: 'types', value: 'a,input,button,submit' },
+    { name: 'style', value: 'helper' }
+  ];
 
   ngOnInit() {
     this.set_badge();
@@ -43,9 +49,19 @@ export class AppComponent implements OnInit {
       } else {
         this.options = obj['page_object'];
       }
-      // TODO why it says this is not a method?
-      this.notify('Options Loaded', JSON.stringify(this.options));
     });
+  }
+
+  add_new_option() {
+
+  }
+
+  update_option() {
+
+  }
+
+  delete_option() {
+
   }
 
   download_framework() {
