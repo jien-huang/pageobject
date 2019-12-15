@@ -70,6 +70,21 @@
     fill: #888;
   }
 
+  .width-20pc {
+    width: 18%;
+    margin: 2px auto;
+  }
+
+  .width-80pc {
+    width: 78%;
+    margin: 2px auto;
+  }
+
+  .width-100pc {
+    width: 98%;
+    margin: 2px auto;
+  }
+
   .card-container {
     display: flex;
     flex-wrap: wrap;

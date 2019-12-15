@@ -11,6 +11,14 @@ export class AppComponent implements OnInit {
   count = 0;
   new_name = '';
   new_value = '';
+  pages = [{id: '1234567890', name:'test.js', script:`
+  import Pages
+  // This is a test
+
+  var a = 10
+  print(a)
+  
+  `}];
   options = [
     { name: 'header', value: '// This is a header' },
     { name: 'types', value: 'a,input,button,submit' },
@@ -18,8 +26,8 @@ export class AppComponent implements OnInit {
   ];
 
   ngOnInit() {
-    this.set_badge();
-    this.load_options();
+    this._load_options();
+    this._load_pages();
   }
 
   download_page_objects() {
@@ -38,11 +46,26 @@ export class AppComponent implements OnInit {
   }
 
   save_options() {
+    this._save_options();
+    this.notify('Options Saved', 'Options saved to chrome sync storage.');
+  }
+
+  _save_options() {
     chrome.storage.sync.set({ 'page_object': this.options });
-    this.notify('Options Saved', JSON.stringify(this.options));
+  }
+
+  _save_pages() {
+    chrome.storage.local.set({'pages': this.pages});
+    this.count = this.pages.length;
+    this.set_badge();
   }
 
   load_options() {
+    this._load_options();
+    this.notify('Options Loaded', 'Options re-loaded from chrome sync storage.');
+  }
+
+  _load_options() {
     chrome.storage.sync.get('page_object', (obj) => {
       if (!obj['page_object']) {
         chrome.storage.sync.set({ 'page_object': this.options });
@@ -52,15 +75,41 @@ export class AppComponent implements OnInit {
     });
   }
 
+  _load_pages() {
+    chrome.storage.local.get('pages', (obj) =>{
+      if(!obj['pages']) {
+        chrome.storage.local.set({'pages': this.pages});
+      }else {
+        this.pages = obj['pages'];
+        this.count = this.pages.length;
+        this.set_badge();
+      }
+    });
+  }
+
   add_new_option() {
 
+
+    this._save_options();
   }
 
   update_option() {
 
+
+    this._save_options();
   }
 
   delete_option() {
+
+
+    this._save_options();
+  }
+
+  update_page() {
+
+  }
+
+  delete_page() {
 
   }
 
@@ -76,6 +125,7 @@ export class AppComponent implements OnInit {
     if (this.count === 0) {
       chrome.browserAction.setBadgeText({ text: '' });
     } else {
+      // chrome.browserAction.setBadgeBackgroundColor({color:[255, 255, 255, 100]});
       chrome.browserAction.setBadgeText({ text: this.count.toString() });
     }
   }

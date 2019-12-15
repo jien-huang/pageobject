@@ -23,7 +23,28 @@
       <!-- <mat-icon >cloud_download</mat-icon> -->
       Generated Contents
     </ng-template>
-    No Page Captured.
+    <mat-expansion-panel *ngFor="let page of pages">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <label><i>Name</i>:&nbsp;&nbsp;{{page.name}}</label><div class="spacer"></div><Label style="font-weight: 300;"><small>ID: {{page.id}}</small></Label>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-panel-description>
+        
+      </mat-panel-description>
+      <mat-form-field>
+        <input matInput placeholder="Name" value="{{page.name}}">
+      </mat-form-field>
+      
+      <mat-form-field class="width-100pc">
+        <textarea matInput placeholder="Script" value="{{page.script}}" cdkTextareaAutosize
+          #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="3" ></textarea>
+      </mat-form-field>
+      <mat-action-row>
+        <button mat-button color="accent" [disabled]="!(page.name && page.script)"  (click)="update_page()">Update</button>
+        <button mat-button color="warn" [disabled]="!page.name"  (click)="delete_page()">Delete</button>
+      </mat-action-row>
+    </mat-expansion-panel>
   </mat-tab>
   <mat-tab>
     <ng-template mat-tab-label>
@@ -40,23 +61,22 @@
         </mat-panel-description>
       </mat-expansion-panel-header>
 
-      <mat-form-field>
+      <mat-form-field class="width-20pc">
         <input matInput placeholder="Name" [(ngModel)]="new_name">
         <button mat-button *ngIf="new_name" matSuffix mat-icon-button aria-label="Clear" (click)="new_name=''">
           <mat-icon>close</mat-icon>
         </button>
       </mat-form-field>
-
-      <mat-form-field>
-        <textarea matInput placeholder="Value" cdkTextareaAutosize
-        #autosize="cdkTextareaAutosize"
-        cdkAutosizeMinRows="1" [(ngModel)]="new_value"></textarea>
+<span>&nbsp;</span>
+      <mat-form-field  class="width-80pc">
+        <textarea matInput placeholder="Value" cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+          cdkAutosizeMinRows="1" [(ngModel)]="new_value"></textarea>
         <button mat-button *ngIf="new_value" matSuffix mat-icon-button aria-label="Clear" (click)="new_value=''">
           <mat-icon>close</mat-icon>
         </button>
       </mat-form-field>
       <mat-action-row>
-        <button mat-button color="primary" [disabled]="!new_name && !new_value" (click)="add_new_option()">Add</button>
+        <button mat-button color="primary" [disabled]="!new_name || !new_value" (click)="add_new_option()">Add</button>
 
         <button mat-button color="accent" (click)="save_options()">Save</button>
         <button mat-button color="warn" (click)="load_options()">Reload</button>
@@ -64,25 +84,27 @@
     </mat-expansion-panel>
     <mat-divider></mat-divider>
     <mat-accordion>
-      <mat-list class="card-container">
-        <mat-list-item class="card-content" *ngFor="let option of options">
-          <mat-form-field>
-            <input matInput placeholder="Name" value="{{option.name}}">
-          </mat-form-field>
+      <mat-expansion-panel *ngFor="let option of options">
+        <mat-expansion-panel-header>
+          <mat-panel-title>{{option.name}}</mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-form-field  class="width-20pc">
+          <input matInput placeholder="Name" readonly value="{{option.name}}">
+        </mat-form-field>
+<span>&nbsp;</span>
+        <mat-form-field  class="width-80pc">
+          <textarea matInput placeholder="Value" value="{{option.value}}" cdkTextareaAutosize
+            #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"></textarea>
+        </mat-form-field>
+        <mat-action-row>
+          <button mat-button color="accent" [disabled]="!(option.name && option.value)"  (click)="update_option()">Update</button>
+          <button mat-button color="warn" [disabled]="!option.name"  (click)="delete_option()">Delete</button>
+        </mat-action-row>
+      </mat-expansion-panel>
+      <mat-divider></mat-divider>
 
-          <mat-form-field>
-            
-            <textarea matInput placeholder="Value" value="{{option.value}}" cdkTextareaAutosize
-            #autosize="cdkTextareaAutosize"
-            cdkAutosizeMinRows="1"></textarea>
-            
-          </mat-form-field>
-          <button mat-button color="accent" (click)="update_option()">Update</button>
-          <button mat-button color="warn" (click)="delete_option()">Delete</button>
-        </mat-list-item>
-        <mat-divider></mat-divider>
-      </mat-list>
     </mat-accordion>
+    <pre>{{options|json}}</pre>
 
   </mat-tab>
 </mat-tab-group>
