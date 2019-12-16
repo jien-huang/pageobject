@@ -62,21 +62,21 @@
       </mat-expansion-panel-header>
 
       <mat-form-field class="width-20pc">
-        <input matInput placeholder="Name" [(ngModel)]="new_name">
-        <button mat-button *ngIf="new_name" matSuffix mat-icon-button aria-label="Clear" (click)="new_name=''">
+        <input matInput placeholder="Name" [(ngModel)]="newName">
+        <button mat-button *ngIf="newName" matSuffix mat-icon-button aria-label="Clear" (click)="newName=''">
           <mat-icon>close</mat-icon>
         </button>
       </mat-form-field>
 <span>&nbsp;</span>
       <mat-form-field  class="width-80pc">
         <textarea matInput placeholder="Value" cdkTextareaAutosize #autosize="cdkTextareaAutosize"
-          cdkAutosizeMinRows="1" [(ngModel)]="new_value"></textarea>
-        <button mat-button *ngIf="new_value" matSuffix mat-icon-button aria-label="Clear" (click)="new_value=''">
+          cdkAutosizeMinRows="1" [(ngModel)]="newValue"></textarea>
+        <button mat-button *ngIf="newValue" matSuffix mat-icon-button aria-label="Clear" (click)="newValue=''">
           <mat-icon>close</mat-icon>
         </button>
       </mat-form-field>
       <mat-action-row>
-        <button mat-button color="primary" [disabled]="!new_name || !new_value" (click)="add_new_option()">Add</button>
+        <button mat-button color="primary" [disabled]="!newName || !newValue" (click)="add_new_option()">Add</button>
 
         <button mat-button color="accent" (click)="save_options()">Save</button>
         <button mat-button color="warn" (click)="load_options()">Reload</button>

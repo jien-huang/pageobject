@@ -9,15 +9,14 @@ import { Component, OnInit } from '@angular/core';
 export class AppComponent implements OnInit {
   title = 'Page Objects';
   count = 0;
-  new_name = '';
-  new_value = '';
-  pages = [{id: '1234567890', name:'test.js', script:`
+  newName = '';
+  newValue = '';
+  pages = [{id: '1234567890', name: 'test.js', script: `
   import Pages
   // This is a test
 
   var a = 10
   print(a)
-  
   `}];
   options = [
     { name: 'header', value: '// This is a header' },
@@ -51,11 +50,11 @@ export class AppComponent implements OnInit {
   }
 
   _save_options() {
-    chrome.storage.sync.set({ 'page_object': this.options });
+    chrome.storage.sync.set({ page_object: this.options });
   }
 
   _save_pages() {
-    chrome.storage.local.set({'pages': this.pages});
+    chrome.storage.local.set({pages: this.pages});
     this.count = this.pages.length;
     this.set_badge();
   }
@@ -67,20 +66,20 @@ export class AppComponent implements OnInit {
 
   _load_options() {
     chrome.storage.sync.get('page_object', (obj) => {
-      if (!obj['page_object']) {
-        chrome.storage.sync.set({ 'page_object': this.options });
+      if (!obj.page_object) {
+        chrome.storage.sync.set({ page_object: this.options });
       } else {
-        this.options = obj['page_object'];
+        this.options = obj.page_object;
       }
     });
   }
 
   _load_pages() {
-    chrome.storage.local.get('pages', (obj) =>{
-      if(!obj['pages']) {
-        chrome.storage.local.set({'pages': this.pages});
-      }else {
-        this.pages = obj['pages'];
+    chrome.storage.local.get('pages', (obj) => {
+      if (!obj.pages) {
+        chrome.storage.local.set({pages: this.pages});
+      } else {
+        this.pages = obj.pages;
         this.count = this.pages.length;
         this.set_badge();
       }
