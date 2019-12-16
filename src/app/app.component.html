@@ -93,7 +93,7 @@
         </mat-form-field>
 <span>&nbsp;</span>
         <mat-form-field  class="width-80pc">
-          <textarea matInput placeholder="Value" value="{{option.value}}" cdkTextareaAutosize
+          <textarea matInput placeholder="Value" [(ngModel)]="option.value" cdkTextareaAutosize
             #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"></textarea>
         </mat-form-field>
         <mat-action-row>

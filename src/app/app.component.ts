@@ -98,6 +98,7 @@ export class AppComponent implements OnInit {
         item.value = option.value;
       }
     });
+    console.log(this.options)
     this._save_options();
   }
 
