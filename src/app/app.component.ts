@@ -50,11 +50,11 @@ export class AppComponent implements OnInit {
   }
 
   _save_options() {
-    chrome.storage.sync.set({ page_object: this.options });
+    chrome.storage.sync.set({ 'page_object': this.options });
   }
 
   _save_pages() {
-    chrome.storage.local.set({pages: this.pages});
+    chrome.storage.local.set({'pages': this.pages});
     this.count = this.pages.length;
     this.set_badge();
   }
@@ -67,7 +67,7 @@ export class AppComponent implements OnInit {
   _load_options() {
     chrome.storage.sync.get('page_object', (obj) => {
       if (!obj.page_object) {
-        chrome.storage.sync.set({ page_object: this.options });
+        chrome.storage.sync.set({ 'page_object': this.options });
       } else {
         this.options = obj.page_object;
       }
@@ -76,8 +76,9 @@ export class AppComponent implements OnInit {
 
   _load_pages() {
     chrome.storage.local.get('pages', (obj) => {
-      if (!obj.pages) {
-        chrome.storage.local.set({pages: this.pages});
+      // TODO: we use this to generate default page for testing, should be removed.
+      if (!obj.pages || obj.pages.length === 0) {
+        chrome.storage.local.set({'pages': this.pages});
       } else {
         this.pages = obj.pages;
         this.count = this.pages.length;
@@ -92,8 +93,11 @@ export class AppComponent implements OnInit {
   }
 
   update_option(option) {
-    const itemUpdate = this.options.find(item => item.name = option.name);
-    itemUpdate.value = option.value;
+    this.options.forEach((item) => {
+      if (item.name === option.name) {
+        item.value = option.value;
+      }
+    });
     this._save_options();
   }
 
@@ -103,9 +107,12 @@ export class AppComponent implements OnInit {
   }
 
   update_page(page: any) {
-    const itemUpdate = this.pages.find(item => item.id === page.id );
-    itemUpdate.name = page.name;
-    itemUpdate.script = page.script;
+    this.pages.forEach((item) => {
+      if (item.id === page.id) {
+        item.name = page.name;
+        item.script = page.script;
+      }
+    });
     this._save_pages();
   }
 
@@ -130,6 +137,37 @@ export class AppComponent implements OnInit {
       chrome.browserAction.setBadgeText({ text: this.count.toString() });
     }
   }
+
+  // use jsdoc to give end users a hint
+// var clickable = {
+//     SUBMIT: 'submit',
+//     CANCEL: 'cancel'
+// }
+// /**
+//  *
+//  * @param {clickable} action use clickable
+//  */
+// function testFunction(action) {
+//     print(action)
+// }
+// testFunction()
+/*
+    consider store page objects in local storage, because sync has 102K size limit, while local is 5.2M
+    all page objects will looks like below
+    {
+        pages: [
+            {'id':'1234', 'name':'generatedPageName.js', 'captureAt':'dateTimeStamp', 'url':'https://.....',
+                'objects': [
+                {'type':'button', 'text':'OK', 'id':'confirm', 'name':'confirm', 'special-id':'xxx'},
+                {'type':'input', 'value':'first name', ...}
+                {'type':'select', 'selected':'chosen value', options:['xxxx','xxx','xx']}
+                ],
+                'script': ' import .... '
+            }
+        ]
+    }
+
+*/
 
   // communicate with background.js, one way
   // notify_background(info) {

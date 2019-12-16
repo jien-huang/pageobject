@@ -33,11 +33,11 @@
         
       </mat-panel-description>
       <mat-form-field>
-        <input matInput placeholder="Name" value="{{page.name}}">
+        <input matInput placeholder="Name" [(ngModel)]="page.name">
       </mat-form-field>
       
       <mat-form-field class="width-100pc">
-        <textarea matInput placeholder="Script" value="{{page.script}}" cdkTextareaAutosize
+        <textarea matInput placeholder="Script" [(ngModel)]="page.script" cdkTextareaAutosize
           #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="3" ></textarea>
       </mat-form-field>
       <mat-action-row>

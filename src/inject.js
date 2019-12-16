@@ -9,16 +9,32 @@ chrome.runtime.onMessage.addListener(
     }
 );
 
+// use jsdoc to give end users a hint
+// var clickable = {
+//     SUBMIT: 'submit',
+//     CANCEL: 'cancel'
+// }
+// /**
+//  * 
+//  * @param {clickable} action use clickable
+//  */
+// function testFunction(action) {
+//     print(action)
+// }
+// testFunction()
 /*
     consider store page objects in local storage, because sync has 102K size limit, while local is 5.2M
     all page objects will looks like below
     {
         pages: [
-            {'name':'generatedPageName', 'captureAt':'dateTimeStamp', 'url':'https://.....' 'objects': [
+            {'id':'1234', 'name':'generatedPageName.js', 'captureAt':'dateTimeStamp', 'url':'https://.....', 
+                'objects': [
                 {'type':'button', 'text':'OK', 'id':'confirm', 'name':'confirm', 'special-id':'xxx'},
                 {'type':'input', 'value':'first name', ...}
                 {'type':'select', 'selected':'chosen value', options:['xxxx','xxx','xx']}
-            ]}
+                ],
+                'script': ' import .... '
+            }
         ]
     }
 
