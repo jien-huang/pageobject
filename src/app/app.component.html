@@ -11,7 +11,7 @@
   </mat-menu>
   <span>Welcome</span>
   <div class="spacer"></div>
-  <button mat-button (click)="to_my_home()">
+  <button mat-raised-button (click)="to_my_home()">
     <mat-icon>cloud_download</mat-icon>
   </button>
   <p>&nbsp;</p>
@@ -41,8 +41,8 @@
           #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="3" ></textarea>
       </mat-form-field>
       <mat-action-row>
-        <button mat-button color="accent" [disabled]="!(page.name && page.script)"  (click)="update_page()">Update</button>
-        <button mat-button color="warn" [disabled]="!page.name"  (click)="delete_page()">Delete</button>
+        <button mat-raised-button color="accent" [disabled]="!(page.name && page.script)"  (click)="update_page(page)">Update</button>
+        <button mat-raised-button color="warn" [disabled]="!page.name"  (click)="delete_page(page.id)">Delete</button>
       </mat-action-row>
     </mat-expansion-panel>
   </mat-tab>
@@ -63,7 +63,7 @@
 
       <mat-form-field class="width-20pc">
         <input matInput placeholder="Name" [(ngModel)]="newName">
-        <button mat-button *ngIf="newName" matSuffix mat-icon-button aria-label="Clear" (click)="newName=''">
+        <button mat-raised-button *ngIf="newName" matSuffix mat-icon-button aria-label="Clear" (click)="newName=''">
           <mat-icon>close</mat-icon>
         </button>
       </mat-form-field>
@@ -71,15 +71,15 @@
       <mat-form-field  class="width-80pc">
         <textarea matInput placeholder="Value" cdkTextareaAutosize #autosize="cdkTextareaAutosize"
           cdkAutosizeMinRows="1" [(ngModel)]="newValue"></textarea>
-        <button mat-button *ngIf="newValue" matSuffix mat-icon-button aria-label="Clear" (click)="newValue=''">
+        <button mat-raised-button *ngIf="newValue" matSuffix mat-icon-button aria-label="Clear" (click)="newValue=''">
           <mat-icon>close</mat-icon>
         </button>
       </mat-form-field>
       <mat-action-row>
-        <button mat-button color="primary" [disabled]="!newName || !newValue" (click)="add_new_option()">Add</button>
+        <button mat-raised-button color="primary" [disabled]="!newName || !newValue" (click)="add_new_option()">Add</button>
 
-        <button mat-button color="accent" (click)="save_options()">Save</button>
-        <button mat-button color="warn" (click)="load_options()">Reload</button>
+        <button mat-raised-button color="accent" (click)="save_options()">Save</button>
+        <button mat-raised-button color="warn" (click)="load_options()">Reload</button>
       </mat-action-row>
     </mat-expansion-panel>
     <mat-divider></mat-divider>
@@ -97,8 +97,8 @@
             #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"></textarea>
         </mat-form-field>
         <mat-action-row>
-          <button mat-button color="accent" [disabled]="!(option.name && option.value)"  (click)="update_option()">Update</button>
-          <button mat-button color="warn" [disabled]="!option.name"  (click)="delete_option()">Delete</button>
+          <button mat-raised-button color="accent" [disabled]="!(option.name && option.value)"  (click)="update_option(option)">Update</button>
+          <button mat-raised-button color="warn" [disabled]="!option.name"  (click)="delete_option(option.name)">Delete</button>
         </mat-action-row>
       </mat-expansion-panel>
       <mat-divider></mat-divider>

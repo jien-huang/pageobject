@@ -87,29 +87,31 @@ export class AppComponent implements OnInit {
   }
 
   add_new_option() {
-
-
+    this.options.push({name: this.newName, value: this.newValue});
     this._save_options();
   }
 
-  update_option() {
-
-
+  update_option(option) {
+    const itemUpdate = this.options.find(item => item.name = option.name);
+    itemUpdate.value = option.value;
     this._save_options();
   }
 
-  delete_option() {
-
-
+  delete_option(optionName: string) {
+    this.options = this.options.filter(item => item.name !== optionName);
     this._save_options();
   }
 
-  update_page() {
-
+  update_page(page: any) {
+    const itemUpdate = this.pages.find(item => item.id === page.id );
+    itemUpdate.name = page.name;
+    itemUpdate.script = page.script;
+    this._save_pages();
   }
 
-  delete_page() {
-
+  delete_page(pageId: string) {
+    this.pages = this.pages.filter(item => item.id !== pageId);
+    this._save_pages();
   }
 
   download_framework() {
