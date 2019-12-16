@@ -46,6 +46,20 @@ async function getPageObjects() {
         options = data['page_object'];
         console.log(options);
         //now we have the options, begin to capture objects
+        var onePage = {};
+        onePage.url = removeRandomNumberInString(window.location.pathname);
+        for (var i = 0; i < str_array.length; i++) {
+            //TODO consider add a list of can_be_ignored words here
+            if (str_array[i].length === 0) {
+                continue
+            }
+            _className = _className + str_array[i].charAt(0).toUpperCase() + str_array[i].slice(1);
+        }
+        onePage.name = removeRandomNumberInString(_className) + 'Page.js'
+        onePage.timeStamp = new Date().toLocaleString();
+
+        objs = [];
+
 
         // end of capture, write to storage
 
@@ -56,23 +70,6 @@ async function getPageObjects() {
         count = 10
         chrome.runtime.sendMessage({'count': count.toString()});
     });
-}
-
-function getName(className) {
-    if (className && className.length > 0) {
-        return className
-    }
-    var _url = window.location.pathname
-    var str_array = _url.split('/')
-    var _className = ''
-    for (var i = 0; i < str_array.length; i++) {
-        //TODO consider add a list of can_be_ignored words here
-        if (str_array[i].length === 0) {
-            continue
-        }
-        _className = _className + str_array[i].charAt(0).toUpperCase() + str_array[i].slice(1);
-    }
-    return removeRandomNumberInString(_className) + 'Page'
 }
 
 function removeRandomNumberInString(original_string) {
