@@ -26,13 +26,19 @@
     <mat-expansion-panel *ngFor="let page of pages">
       <mat-expansion-panel-header>
         <mat-panel-title>
-          <label><i>Name</i>:&nbsp;&nbsp;{{page.name}}</label><div class="spacer"></div><Label style="font-weight: 300;"><small>ID: {{page.id}}</small></Label>
+          <small>Name</small>:&nbsp;&nbsp;<label>{{page.name}}</label><div class="spacer"></div><Label style="font-weight: 300;"><small>ID: {{page.id}}</small></Label>
         </mat-panel-title>
+        
       </mat-expansion-panel-header>
       <mat-panel-description>
-        
+        <small>URL:</small><Label>{{page.url}}</Label><div class="spacer"></div>
+        <small>AT:</small><Label>{{page.timeStamp}}</Label>
       </mat-panel-description>
-      <mat-form-field>
+      <mat-action-row>
+        <button mat-raised-button color="accent" [disabled]="!(page.name && page.script)"  (click)="update_page(page)">Save</button>
+        <button mat-raised-button color="warn" [disabled]="!page.name"  (click)="delete_page(page.id)">Delete</button>
+      </mat-action-row>
+      <mat-form-field class="width-80pc">
         <input matInput placeholder="Name" [(ngModel)]="page.name">
       </mat-form-field>
       
@@ -42,10 +48,7 @@
         <!-- TODO: for test, delete later -->
         <pre>{{page|json}}</pre>      
       </mat-form-field>
-      <mat-action-row>
-        <button mat-raised-button color="accent" [disabled]="!(page.name && page.script)"  (click)="update_page(page)">Save</button>
-        <button mat-raised-button color="warn" [disabled]="!page.name"  (click)="delete_page(page.id)">Delete</button>
-      </mat-action-row>
+      
     </mat-expansion-panel>
   </mat-tab>
   <mat-tab>
