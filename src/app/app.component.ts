@@ -11,17 +11,10 @@ export class AppComponent implements OnInit {
   count = 0;
   newName = '';
   newValue = '';
-  pages = [{id: '1234567890', name: 'test.js', script: `
-  import Pages
-  // This is a test
-
-  var a = 10
-  print(a)
-  `}];
+  pages = [];
   options = [
-    { name: 'header', value: '// This is a header' },
-    { name: 'types', value: 'a,input,button,submit' },
-    { name: 'style', value: 'helper' }
+    { name: 'types', value: 'a,button,submit,input,select' },
+    { name: 'attributes', value: 'id,name,type,value,text,href,title,hidden,tagName' }
   ];
 
   ngOnInit() {
@@ -79,11 +72,12 @@ export class AppComponent implements OnInit {
       // TODO: we use this to generate default page for testing, should be removed.
       if (!obj.pages || obj.pages.length === 0) {
         chrome.storage.local.set({'pages': this.pages});
+        this.count = 0;
       } else {
         this.pages = obj.pages;
         this.count = this.pages.length;
-        this.set_badge();
       }
+      this.set_badge();
     });
   }
 

@@ -39,9 +39,11 @@
       <mat-form-field class="width-100pc">
         <textarea matInput placeholder="Script" [(ngModel)]="page.script" cdkTextareaAutosize
           #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="3" ></textarea>
+        <!-- TODO: for test, delete later -->
+        <pre>{{page|json}}</pre>      
       </mat-form-field>
       <mat-action-row>
-        <button mat-raised-button color="accent" [disabled]="!(page.name && page.script)"  (click)="update_page(page)">Update</button>
+        <button mat-raised-button color="accent" [disabled]="!(page.name && page.script)"  (click)="update_page(page)">Save</button>
         <button mat-raised-button color="warn" [disabled]="!page.name"  (click)="delete_page(page.id)">Delete</button>
       </mat-action-row>
     </mat-expansion-panel>
@@ -77,7 +79,6 @@
       </mat-form-field>
       <mat-action-row>
         <button mat-raised-button color="primary" [disabled]="!newName || !newValue" (click)="add_new_option()">Add</button>
-
         <button mat-raised-button color="accent" (click)="save_options()">Save</button>
         <button mat-raised-button color="warn" (click)="load_options()">Reload</button>
       </mat-action-row>
@@ -97,14 +98,11 @@
             #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"></textarea>
         </mat-form-field>
         <mat-action-row>
-          <button mat-raised-button color="accent" [disabled]="!(option.name && option.value)"  (click)="update_option(option)">Update</button>
+          <button mat-raised-button color="accent" [disabled]="!(option.name && option.value)"  (click)="update_option(option)">Save</button>
           <button mat-raised-button color="warn" [disabled]="!option.name"  (click)="delete_option(option.name)">Delete</button>
         </mat-action-row>
       </mat-expansion-panel>
       <mat-divider></mat-divider>
-
     </mat-accordion>
-    <pre>{{options|json}}</pre>
-
   </mat-tab>
 </mat-tab-group>
