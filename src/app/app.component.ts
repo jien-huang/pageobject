@@ -16,6 +16,21 @@ export class AppComponent implements OnInit {
     { name: 'types', value: 'a,button,submit,input,select' },
     { name: 'attributes', value: 'id,name,type,value,text,href,title,hidden,tagName' }
   ];
+  about = `
+import page from './page-model';
+
+fixture \`My fixture\`
+    .page \`https://devexpress.github.io/testcafe/example/\`;
+
+test('Text typing basics', async t => {
+    await t
+        .typeText(page.nameInput, 'Peter')
+        .typeText(page.nameInput, 'Paker', { replace: true })
+        .typeText(page.nameInput, 'r', { caretPos: 2 })
+        .expect(page.nameInput.value).eql('Parker');
+});
+
+  `;
 
   ngOnInit() {
     this._load_options();
@@ -43,11 +58,11 @@ export class AppComponent implements OnInit {
   }
 
   _save_options() {
-    chrome.storage.sync.set({ 'page_object': this.options });
+    chrome.storage.sync.set({ page_object: this.options });
   }
 
   _save_pages() {
-    chrome.storage.local.set({'pages': this.pages});
+    chrome.storage.local.set({pages: this.pages});
     this.count = this.pages.length;
     this.set_badge();
   }
@@ -60,7 +75,7 @@ export class AppComponent implements OnInit {
   _load_options() {
     chrome.storage.sync.get('page_object', (obj) => {
       if (!obj.page_object) {
-        chrome.storage.sync.set({ 'page_object': this.options });
+        chrome.storage.sync.set({ page_object: this.options });
       } else {
         this.options = obj.page_object;
       }
@@ -71,7 +86,7 @@ export class AppComponent implements OnInit {
     chrome.storage.local.get('pages', (obj) => {
       // TODO: we use this to generate default page for testing, should be removed.
       if (!obj.pages || obj.pages.length === 0) {
-        chrome.storage.local.set({'pages': this.pages});
+        chrome.storage.local.set({pages: this.pages});
         this.count = 0;
       } else {
         this.pages = obj.pages;
@@ -92,7 +107,7 @@ export class AppComponent implements OnInit {
         item.value = option.value;
       }
     });
-    console.log(this.options)
+    console.log(this.options);
     this._save_options();
   }
 
@@ -114,6 +129,10 @@ export class AppComponent implements OnInit {
   delete_page(pageId: string) {
     this.pages = this.pages.filter(item => item.id !== pageId);
     this._save_pages();
+  }
+
+  generate_script(page: any) {
+    // TODO: generate script
   }
 
   download_framework() {

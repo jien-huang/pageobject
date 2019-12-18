@@ -35,6 +35,8 @@
         <small>AT:</small><Label>{{page.timeStamp}}</Label>
       </mat-panel-description>
       <mat-action-row>
+        <button mat-raised-button color="primary"  (click)="generate_script(page)">Generate Script</button>
+        
         <button mat-raised-button color="accent" [disabled]="!(page.name && page.script)"  (click)="update_page(page)">Save</button>
         <button mat-raised-button color="warn" [disabled]="!page.name"  (click)="delete_page(page.id)">Delete</button>
       </mat-action-row>
@@ -108,4 +110,10 @@
       <mat-divider></mat-divider>
     </mat-accordion>
   </mat-tab>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <!-- <mat-icon >cloud_download</mat-icon> -->
+      About
+    </ng-template>
+    <pre><code>{{about}}</code></pre></mat-tab>
 </mat-tab-group>
