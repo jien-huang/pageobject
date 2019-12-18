@@ -1,7 +1,6 @@
 <div class="toolbar" role="banner">
   <button mat-icon-button [matMenuTriggerFor]="main" aria-label="Menu">
     <mat-icon>more_vert</mat-icon>
-
   </button>
   <mat-menu #main="matMenu">
     <button mat-menu-item (click)="download_page_objects()">Download Page Objects</button>
@@ -38,7 +37,6 @@
       </mat-panel-description>
       <mat-action-row>
         <button mat-raised-button color="primary" (click)="generate_script(page)">Generate Script</button>
-
         <button mat-raised-button color="accent" [disabled]="!(page.name && page.script)"
           (click)="update_page(page)">Save</button>
         <button mat-raised-button color="warn" [disabled]="!page.name" (click)="delete_page(page.id)">Delete</button>
@@ -53,12 +51,10 @@
         <!-- TODO: for test, delete later -->
         <pre>{{page|json}}</pre>
       </mat-form-field>
-
     </mat-expansion-panel>
   </mat-tab>
   <mat-tab>
     <ng-template mat-tab-label>
-      <!-- <mat-icon (click)="save_options()">save</mat-icon> -->
       Options
     </ng-template>
     <mat-expansion-panel>
@@ -118,7 +114,6 @@
   </mat-tab>
   <mat-tab>
     <ng-template mat-tab-label>
-      <!-- <mat-icon >cloud_download</mat-icon> -->
       About
     </ng-template>
     <pre><code>{{about}}</code></pre>
