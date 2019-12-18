@@ -7,9 +7,9 @@
     <button mat-menu-item (click)="download_page_objects()">Download Page Objects</button>
     <button mat-menu-item (click)="save_options()">Save Options</button>
     <button mat-menu-item (click)="load_options()">Download Framework</button>
-    <button mat-menu-item (click)="to_my_home()">About</button>
+    <button mat-menu-item (click)="to_my_home()">More Infomation ...</button>
   </mat-menu>
-  <span>Welcome</span>
+  <span>Welcome to Automation-Test</span>
   <div class="spacer"></div>
   <button mat-raised-button (click)="to_my_home()">
     <mat-icon>cloud_download</mat-icon>
@@ -26,31 +26,34 @@
     <mat-expansion-panel *ngFor="let page of pages">
       <mat-expansion-panel-header>
         <mat-panel-title>
-          <small>Name</small>:&nbsp;&nbsp;<label>{{page.name}}</label><div class="spacer"></div><Label style="font-weight: 300;"><small>ID: {{page.id}}</small></Label>
+          <small>Name</small>:&nbsp;&nbsp;<label>{{page.name}}</label>
+          <div class="spacer"></div><Label style="font-weight: 300;"><small>ID: {{page.id}}</small></Label>
         </mat-panel-title>
-        
+
       </mat-expansion-panel-header>
       <mat-panel-description>
-        <small>URL:</small><Label>{{page.url}}</Label><div class="spacer"></div>
+        <small>URL:</small><Label>{{page.url}}</Label>
+        <div class="spacer"></div>
         <small>AT:</small><Label>{{page.timeStamp}}</Label>
       </mat-panel-description>
       <mat-action-row>
-        <button mat-raised-button color="primary"  (click)="generate_script(page)">Generate Script</button>
-        
-        <button mat-raised-button color="accent" [disabled]="!(page.name && page.script)"  (click)="update_page(page)">Save</button>
-        <button mat-raised-button color="warn" [disabled]="!page.name"  (click)="delete_page(page.id)">Delete</button>
+        <button mat-raised-button color="primary" (click)="generate_script(page)">Generate Script</button>
+
+        <button mat-raised-button color="accent" [disabled]="!(page.name && page.script)"
+          (click)="update_page(page)">Save</button>
+        <button mat-raised-button color="warn" [disabled]="!page.name" (click)="delete_page(page.id)">Delete</button>
       </mat-action-row>
       <mat-form-field class="width-80pc">
         <input matInput placeholder="Name" [(ngModel)]="page.name">
       </mat-form-field>
-      
+
       <mat-form-field class="width-100pc">
         <textarea matInput placeholder="Script" [(ngModel)]="page.script" cdkTextareaAutosize
-          #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="3" ></textarea>
+          #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="3"></textarea>
         <!-- TODO: for test, delete later -->
-        <pre>{{page|json}}</pre>      
+        <pre>{{page|json}}</pre>
       </mat-form-field>
-      
+
     </mat-expansion-panel>
   </mat-tab>
   <mat-tab>
@@ -74,8 +77,8 @@
           <mat-icon>close</mat-icon>
         </button>
       </mat-form-field>
-<span>&nbsp;</span>
-      <mat-form-field  class="width-80pc">
+      <span>&nbsp;</span>
+      <mat-form-field class="width-80pc">
         <textarea matInput placeholder="Value" cdkTextareaAutosize #autosize="cdkTextareaAutosize"
           cdkAutosizeMinRows="1" [(ngModel)]="newValue"></textarea>
         <button mat-raised-button *ngIf="newValue" matSuffix mat-icon-button aria-label="Clear" (click)="newValue=''">
@@ -83,7 +86,8 @@
         </button>
       </mat-form-field>
       <mat-action-row>
-        <button mat-raised-button color="primary" [disabled]="!newName || !newValue" (click)="add_new_option()">Add</button>
+        <button mat-raised-button color="primary" [disabled]="!newName || !newValue"
+          (click)="add_new_option()">Add</button>
         <button mat-raised-button color="accent" (click)="save_options()">Save</button>
         <button mat-raised-button color="warn" (click)="load_options()">Reload</button>
       </mat-action-row>
@@ -94,17 +98,19 @@
         <mat-expansion-panel-header>
           <mat-panel-title>{{option.name}}</mat-panel-title>
         </mat-expansion-panel-header>
-        <mat-form-field  class="width-20pc">
+        <mat-form-field class="width-20pc">
           <input matInput placeholder="Name" readonly value="{{option.name}}">
         </mat-form-field>
-<span>&nbsp;</span>
-        <mat-form-field  class="width-80pc">
+        <span>&nbsp;</span>
+        <mat-form-field class="width-80pc">
           <textarea matInput placeholder="Value" [(ngModel)]="option.value" cdkTextareaAutosize
             #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"></textarea>
         </mat-form-field>
         <mat-action-row>
-          <button mat-raised-button color="accent" [disabled]="!(option.name && option.value)"  (click)="update_option(option)">Save</button>
-          <button mat-raised-button color="warn" [disabled]="!option.name"  (click)="delete_option(option.name)">Delete</button>
+          <button mat-raised-button color="accent" [disabled]="!(option.name && option.value)"
+            (click)="update_option(option)">Save</button>
+          <button mat-raised-button color="warn" [disabled]="!option.name"
+            (click)="delete_option(option.name)">Delete</button>
         </mat-action-row>
       </mat-expansion-panel>
       <mat-divider></mat-divider>
@@ -115,5 +121,6 @@
       <!-- <mat-icon >cloud_download</mat-icon> -->
       About
     </ng-template>
-    <pre><code>{{about}}</code></pre></mat-tab>
+    <pre><code>{{about}}</code></pre>
+  </mat-tab>
 </mat-tab-group>

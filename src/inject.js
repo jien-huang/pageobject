@@ -52,11 +52,12 @@ async function getPageObjects() {
         for (var i = 0; i < str_array.length; i++) {
             //TODO consider add a list of can_be_ignored words here
             if (str_array[i].length === 0) {
+                // remove the hostname
                 continue
             }
             _className = _className + str_array[i].charAt(0).toUpperCase() + str_array[i].slice(1);
         }
-        onePage.name = removeRandomNumberInString(_className).replace( /\./g , '_') + '_Page.js'
+        onePage.name = removeRandomNumberInString(_className).replace(/\./g, '_') + '_Page.js'
         onePage.timeStamp = new Date().toISOString();
 
         onePage.objects = [];
@@ -67,11 +68,11 @@ async function getPageObjects() {
         for (var i = 0; i < items.length; i++) {
             var _obj = {}
             var attr_arry = attributes.split(',')
-            for(var j = 0 ; j < attr_arry.length; j ++){
+            for (var j = 0; j < attr_arry.length; j++) {
                 var attr_name = attr_arry[j]
                 var attr = items[i][attr_name]
 
-                if(attr) {
+                if (attr) {
                     _obj[attr_name] = attr
                 }
             }
@@ -80,25 +81,25 @@ async function getPageObjects() {
                 onePage.objects.push(_obj);
             }
             onePage.id = hashCode(onePage.id);
-    
+
         }
 
         // end of capture, write to storage
 
         // count the storage, send number to background
         chrome.storage.local.get('pages', (all_pages) => {
-            
-            if(!all_pages) {
+
+            if (!all_pages) {
                 // nothing in the local storage now, really doubt how it happen
                 console.error('How could this happen! Nothing in local storage')
                 return;
-            } 
-            
-            if ( !all_pages.pages) {
-                console.log('no stored pages')   
-                all_pages.pages = []             
-            } 
-           
+            }
+
+            if (!all_pages.pages) {
+                console.log('no stored pages')
+                all_pages.pages = []
+            }
+
             pages = all_pages.pages;
             console.log(pages)
             console.log(onePage)
@@ -107,17 +108,17 @@ async function getPageObjects() {
                 if (item.id === onePage.id) {
                     alert('This page has been captured. Please check.')
                     already = true;
-                } 
+                }
             })
-            if(already) {
+            if (already) {
                 return;
             }
 
             pages.push(onePage);
-            chrome.storage.local.set({'pages': pages})
+            chrome.storage.local.set({ 'pages': pages })
             count = pages.length;
-            chrome.runtime.sendMessage({'count': count.toString()});
-        })        
+            chrome.runtime.sendMessage({ 'count': count.toString() });
+        })
     });
 }
 
@@ -130,7 +131,7 @@ function removeRandomValueInString(original_string) {
 }
 
 function hashCode(e) {
-    for(var r=0,i=0;i<e.length;i++)
-        r=(r<<5)-r+e.charCodeAt(i),r&=r;
-    return r.toString();
+    for (var r = 0, i = 0; i < e.length; i++)
+        r = (r << 5) - r + e.charCodeAt(i), r &= r;
+    return r.toString(16);
 }
