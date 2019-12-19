@@ -136,7 +136,6 @@ test('Text typing basics', async t => {
 
     // generate clickable enum
     // generate setable enum
-    // 
   }
 
   download_framework() {

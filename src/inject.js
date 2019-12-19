@@ -42,8 +42,12 @@ chrome.runtime.onMessage.addListener(
 
 async function getPageObjects() {
     chrome.storage.sync.get('page_object', (data) => {
-        // TODO: what if there is no options stored in this browser? how could this happen? maybe first time?
+        // what if there is no options stored in this browser? how could this happen? maybe first time?
         options = data['page_object'];
+        if (!options || options.length === 0) {
+            alert('no options set in this browser, please set them.')
+            return;
+        }
         //now we have the options, begin to capture objects
         var onePage = {};
         onePage.url = removeRandomNumberInString(window.location.pathname);
@@ -65,6 +69,7 @@ async function getPageObjects() {
         attributes = options.find(item => item.name === 'attributes').value
 
         items = document.querySelectorAll(types)
+        console.log(items)
         for (var i = 0; i < items.length; i++) {
             var _obj = {}
             var attr_arry = attributes.split(',')
@@ -101,8 +106,6 @@ async function getPageObjects() {
             }
 
             pages = all_pages.pages;
-            console.log(pages)
-            console.log(onePage)
             var already = false;
             pages.filter(item => {
                 if (item.id === onePage.id) {
