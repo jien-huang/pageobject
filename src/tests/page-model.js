@@ -1,149 +1,76 @@
-import { Selector, XPathSelector, t } from 'testcafe';
+import { Selector, t } from 'testcafe';
 
-const data = {
-    "id": "4d4bc1c0",
-    "name": "TestcafeExample_Page.js",
-    "objects": [
-      {
-        "id": "developer-name",
-        "name": "name",
-        "tagName": "INPUT",
-        "type": "text"
-      },
-      {
-        "id": "populate",
-        "tagName": "INPUT",
-        "type": "button",
-        "value": "Populate"
-      },
-      {
-        "id": "remote-testing",
-        "name": "remote",
-        "tagName": "INPUT",
-        "type": "checkbox",
-        "value": "on"
-      },
-      {
-        "id": "reusing-js-code",
-        "name": "re-using",
-        "tagName": "INPUT",
-        "type": "checkbox",
-        "value": "on"
-      },
-      {
-        "id": "background-parallel-testing",
-        "name": "background",
-        "tagName": "INPUT",
-        "type": "checkbox",
-        "value": "on"
-      },
-      {
-        "id": "continuous-integration-embedding",
-        "name": "CI",
-        "tagName": "INPUT",
-        "type": "checkbox",
-        "value": "on"
-      },
-      {
-        "id": "traffic-markup-analysis",
-        "name": "analysis",
-        "tagName": "INPUT",
-        "type": "checkbox",
-        "value": "on"
-      },
-      {
-        "id": "windows",
-        "name": "os",
-        "tagName": "INPUT",
-        "type": "radio",
-        "value": "Windows"
-      },
-      {
-        "id": "macos",
-        "name": "os",
-        "tagName": "INPUT",
-        "type": "radio",
-        "value": "MacOS"
-      },
-      {
-        "id": "linux",
-        "name": "os",
-        "tagName": "INPUT",
-        "type": "radio",
-        "value": "Linux"
-      },
-      {
-        "id": "preferred-interface",
-        "name": "preferred-interface",
-        "tagName": "SELECT",
-        "type": "select-one",
-        "value": "Command Line"
-      },
-      {
-        "id": "tried-test-cafe",
-        "name": "tried-test-cafe",
-        "tagName": "INPUT",
-        "type": "checkbox",
-        "value": "on"
-      },
-      {
-        "id": "submit-button",
-        "tagName": "BUTTON",
-        "type": "submit"
-      },
-      {
-        "id": "testcafe-rank",
-        "name": "testcafe-rank",
-        "tagName": "INPUT",
-        "type": "hidden",
-        "value": "1"
-      }
-    ],
-    "timeStamp": "2019-12-19T11:34:26.953Z",
-    "url": "/testcafe/example/"
+export default class Page {
+  constructor() {
+    this.url = "about:blank";
+    this.data = [];
+    this.id = "000000001";
+    this.name = "page-model.js";
+  } 
+
+  async click(clickable_id) {
+    this.action(clickable_id, null, true);
   }
 
-
-class Page {
-    constructor () {
+  async setData(ids) {
+    if (ids === undefined){
+      console.error('Should not pass undefined value to SetData')
     }
-
-}
-
-export function setData(_data) {
-    _data.forEach(oneData => setOneData(oneData))        
-}
-
-export function setOneData(_data) {
-    for(var p in _data) {
-        var nameOrId = p
-        var value = _data[p]
+    if( Array.isArray(ids)){
+      // we will asume you input is this format: [{id:'id of object', value: 'value you want to input'}, ...]
+      for (var i = 0; i < ids.length; i++) {
+        var obj = ids[i];
+        await this.action(obj.id, obj.value)
+      }
+      return this;
     }
-    
-    
-    data.objects.forEach(obj => {
-        // console.log(obj)
-        if(obj.id === nameOrId || obj.name === nameOrId){
-            var item = obj;
-            var search_str = item.tagName.toLowerCase() +'[name=' + item.name +']';
-    
-            if(item.id === nameOrId) {
-                search_str = item.tagName.toLowerCase() +'[id=' + item.id +']' ;
-            }
+    if (!!ids && ids.constructor === Object) {
+      // we will asume you input is this format: {id:value}
+      for (var p in ids) {
+        await this.action(p, ids[p])
+      }
+    }    
+    return this;
+  }
 
-            // var selector = XPathSelector(search_str)
-            // await t.click(XPathSelector(search_str)).takeScreenshot();
-            
-            // await t.click(Selector('#' + item.id)).takeScreenshot();
-            action('#'+item.id )
-        }
-    });       
-    
+  async action(id, value, justClick = false) {
+    var testObject = this.getTestObjectByIdOrName(id)
+    if(!testObject) {
+      console.error('we cannot find object with this id or name: [' + id +']');
+      return;
+    }
+    var selector = Selector(this.getSelctorFromTestObject(testObject, id))
+    if (justClick) {
+      await t.click(selector);
+    } else {
+      switch (String(testObject.type)){
+        case 'text': await t.typeText(selector, value); break;
+        case 'radio': await t.click(selector); break;
+        case 'checkbox': await t.click(selector) ; break;
+        case 'select-one': await t.selectText(selector, 1, 1); break;
+      }
+    }     
+  }
+
+  getSelctorFromTestObject(obj, nameOrId) {
+    var search_str = '';    
+      search_str = obj.tagName.toLowerCase() + '[name=' + obj.name + ']';
+      if (obj.id === nameOrId) {
+        search_str = obj.tagName.toLowerCase() + '[id=' + obj.id + ']';
+      }
+      return search_str;    
+  }
+
+  getTestObjectByIdOrName(nameOrId) {
+    for(var i = 0; i< this.data.length; i++ ) {
+      var obj = this.data[i];
+      if (obj.id === nameOrId || obj.name === nameOrId) {
+        return obj;
+      }
+    }
+    return undefined;
+  }
+
 }
 
-async function action(selector) {
-    console.log(selector)
-    await t.click( selector )
-}
 
-export default new Page();
