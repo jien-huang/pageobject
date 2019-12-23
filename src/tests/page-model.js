@@ -4,12 +4,25 @@ export default class Page {
   constructor() {
     this.url = "about:blank";
     this.data = [];
-    this.id = "000000001";
+    this.id = "00000000";
     this.name = "page-model.js";
   } 
 
+  /**
+   * 
+   * @param { (CLICKABLE) } clickable_id 
+   */
   async click(clickable_id) {
-    this.action(clickable_id, null, true);
+    await this.action(clickable_id, null, true);
+  }
+
+  /**
+   * 
+   * @param {BOOLFIELD} boolField 
+   * @param {boolean} value 
+   */
+  async setBool(boolField, value = true) {
+    await this.action(boolField, value, false)
   }
 
   async setData(ids) {

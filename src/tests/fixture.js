@@ -17,6 +17,6 @@ test('TestCafe Example', async _ => {
 
     var objs = {'CI':'on', 'windows': 'on'}
     await _page.setData(objs);
-    await _page.click(CLICKABLE.POPULATE);
+    await _page.click(CLICKABLE.POPULATE)
 
 });

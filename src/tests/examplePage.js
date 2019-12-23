@@ -1,6 +1,5 @@
 import Page from './page-model'
 
-
 export default class ExamplePage extends Page {
   constructor() {
     super();
@@ -107,6 +106,14 @@ export default class ExamplePage extends Page {
     this.name = "TestcafeExample_Page.js";
     console.log('Perform on Page:' + this.url + ' Id:' + this.id + ' Page Object:' + this.name);
   }
+}
+
+export const BOOLFIELD = {
+  TRIED_TEST_CAFE: 'tried-test-cafe'
+}
+
+export const TEXTFIELD = {
+  DEVELOPER_NAME: 'developer-name'
 }
 
 export const CLICKABLE = {
