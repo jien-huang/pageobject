@@ -8,19 +8,10 @@ export default class Page {
     this.name = "page-model.js";
   } 
 
-  /**
-   * 
-   * @param { (CLICKABLE) } clickable_id 
-   */
   async click(clickable_id) {
     await this.action(clickable_id, null, true);
   }
 
-  /**
-   * 
-   * @param {BOOLFIELD} boolField 
-   * @param {boolean} value 
-   */
   async setBool(boolField, value = true) {
     await this.action(boolField, value, false)
   }
@@ -54,7 +45,7 @@ export default class Page {
     }
     var selector = Selector(this.getSelctorFromTestObject(testObject, id))
     if (justClick) {
-      await t.click(selector);
+      await t.setNativeDialogHandler(() => true).click(selector);
     } else {
       switch (String(testObject.type)){
         case 'text': await t.typeText(selector, value); break;
@@ -83,7 +74,4 @@ export default class Page {
     }
     return undefined;
   }
-
 }
-
-

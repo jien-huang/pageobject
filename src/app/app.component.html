@@ -46,10 +46,8 @@
       </mat-form-field>
 
       <mat-form-field class="width-100pc">
-        <textarea matInput placeholder="Script" [(ngModel)]="page.script" cdkTextareaAutosize
-          #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="3"></textarea>
-        <!-- TODO: for test, delete later -->
-        <pre>{{page|json}}</pre>
+        <textarea matInput placeholder="Script" [(ngModel)]="page.script" cdkTextareaAutosize cdkAutosizeMinRows="2" cdkAutosizeMaxRows="16"></textarea>
+          
       </mat-form-field>
     </mat-expansion-panel>
   </mat-tab>
@@ -116,6 +114,17 @@
     <ng-template mat-tab-label>
       About
     </ng-template>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Copy super script class to your folder
+        </mat-panel-title>
+        <mat-panel-description>
+          <Label>This is super class of the page model, generated pages will inherit methods from it.</Label>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
     <pre><code>{{about}}</code></pre>
+    </mat-expansion-panel>
   </mat-tab>
 </mat-tab-group>
