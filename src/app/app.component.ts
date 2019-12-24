@@ -14,7 +14,8 @@ export class AppComponent implements OnInit {
   pages = [];
   options = [
     { name: 'types', value: 'a,button,submit,input,select' },
-    { name: 'attributes', value: 'id,name,type,value,text,href,title,hidden,tagName' }
+    { name: 'attributes', value: 'id,name,type,value,text,href,title,hidden,tagName' },
+    { name: 'header', value: 'import Page from \'./page-model\''}
   ];
   about = `
   import { Selector, t } from 'testcafe';
@@ -166,6 +167,10 @@ export class AppComponent implements OnInit {
     this._save_options();
   }
 
+  get_one_option_value(optionName: string) {
+    return this.options.find(item => item.name === optionName);
+  }
+
   delete_option(optionName: string) {
     this.options = this.options.filter(item => item.name !== optionName);
     this._save_options();
@@ -188,22 +193,83 @@ export class AppComponent implements OnInit {
 
   generate_script(page: any) {
     // TODO: generate script
-    let _script = `
-    
-export default class ExamplePage extends Page {
+
+    let oneScript = 'export default class ' + page.name.replace('.js', '') + ' extends Page {';
+
+    oneScript += `
+
   constructor() {
     super();
-    this.data = '`;
+    this.data = \n`;
 
-    _script += JSON.stringify(page.objects) + '\';\n';
-    _script += `console.log('Perform on Page:' + this.url + ' Id:' + this.id + ' Page Object:' + this.name);
+    oneScript += JSON.stringify(page.objects, null, 2) + ';\n';
+
+    // add others here
+    oneScript += 'this.id = \'' + page.id + '\';\n';
+    oneScript += 'this.name = \'' + page.name + '\';\n';
+    oneScript += 'this.url = \'' + page.url + '\';\n';
+    oneScript += 'this.CLICKABLE = ' + JSON.stringify(this.getPageClickableField(page.objects), null, 2) + ';\n';
+    oneScript += 'this.BOOLFIELD = ' + JSON.stringify(this.getPageBoolField(page.objects), null, 2) + ';\n';
+    oneScript += 'this.TEXTFIELD = ' + JSON.stringify(this.getPageTextField(page.objects), null, 2) + ';\n';
+    oneScript += 'this.TEXTFIELD = ' + JSON.stringify(this.getPageSelectField(page.objects), null, 2) + ';\n';
+    oneScript += `
+    console.log('Perform on Page:' + this.url + ' Id:' + this.id + ' Page Object:' + this.name);
   }
 }
 `;
-    page.script = _script;
+    const scriptHeader = this.get_one_option_value('header');
+    if (scriptHeader) {
+  oneScript = scriptHeader.value + '\n' + oneScript;
+}
+    page.script = oneScript;
 
     // generate clickable enum
     // generate setable enum
+  }
+
+  getPageClickableField(objects) {
+    const ret = {};
+    for (const to of objects) {
+      if (to.type === 'submit' || to.type === 'button' || to.tagName.toLowerCase() === 'A') {
+        const value = to.id;
+        const name = value.toUpperCase().replace(/-| |\./g, '_');
+        ret[name] = value;
+      }
+    }
+    return ret;
+  }
+  getPageBoolField(objects) {
+    const ret = {};
+    for (const to of objects) {
+      if (to.type === 'checkbox' || to.type === 'radio') {
+        const value = to.id;
+        const name = value.toUpperCase().replace(/-| |\./g, '_');
+        ret[name] = value;
+      }
+    }
+    return ret;
+  }
+  getPageTextField(objects) {
+    const ret = {};
+    for (const to of objects) {
+      if (to.type === 'text' || to.tagName.toLowerCase() === 'textarea') {
+        const value = to.id;
+        const name = value.toUpperCase().replace(/-| |\./g, '_');
+        ret[name] = value;
+      }
+    }
+    return ret;
+  }
+  getPageSelectField(objects) {
+    const ret = {};
+    for (const to of objects) {
+      if (to.tagName.toLowerCase() === 'select') {
+        const value = to.id;
+        const name = value.toUpperCase().replace(/-| |\./g, '_');
+        ret[name] = value;
+      }
+    }
+    return ret;
   }
 
   download_framework() {
