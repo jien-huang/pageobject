@@ -17,13 +17,13 @@ export class AppComponent implements OnInit {
     { name: 'attributes', value: 'id,name,type,value,text,href,title,hidden,tagName' },
     { name: 'header', value: 'import Page from \'./page-model\''}
   ];
-  testExample =`
-  import TestcafeExample_Page from './TestcafeExample_Page';
+  testExample = `
+import TestcafeExample_Page from './TestcafeExample_Page';
 
 fixture \`My fixture\`
     .page \`https://devexpress.github.io/testcafe/example/\`;
 
-      
+
 test('TestCafe Example', async _ => {
 
     var ids = [
@@ -36,11 +36,11 @@ test('TestCafe Example', async _ => {
     await _page.setData(ids);
     var objs = {'CI':'on', 'windows': 'on'}
     await _page.setData(objs);
-    
+
     await _page.click(_page.CLICKABLE.POPULATE);
     await _page.click(_page.CLICKABLE.SUBMIT_BUTTON);
 });
-  `
+  `;
   about = `
 import { Selector, t } from 'testcafe';
 
