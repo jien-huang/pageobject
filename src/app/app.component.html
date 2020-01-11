@@ -46,10 +46,8 @@
       </mat-form-field>
 
       <mat-form-field class="width-100pc">
-        <textarea matInput placeholder="Script" [(ngModel)]="page.script" cdkTextareaAutosize
-          #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="3"></textarea>
-        <!-- TODO: for test, delete later -->
-        <pre>{{page|json}}</pre>
+        <textarea matInput placeholder="Script" [(ngModel)]="page.script" cdkTextareaAutosize cdkAutosizeMinRows="2" cdkAutosizeMaxRows="16"></textarea>
+          
       </mat-form-field>
     </mat-expansion-panel>
   </mat-tab>
@@ -116,6 +114,23 @@
     <ng-template mat-tab-label>
       About
     </ng-template>
-    <pre><code>{{about}}</code></pre>
+    <mat-vertical-stepper #Stepper >
+      <mat-step >
+        <ng-template matStepLabel>Copy super script class to your folder</ng-template>
+        <Label>This is super class of the page model, generated pages will inherit methods from it.</Label>
+        <pre><code>{{about}}</code></pre>
+      </mat-step>
+      <mat-step >
+        <ng-template matStepLabel>Capture Page Object(s)</ng-template>
+        <Label>Right click on the page you want to capture, choose <b>Capture This Page</b>.</Label>
+        <Label>Then you can find the capture page under <b>Generated</b> tab</Label>
+      </mat-step>
+      <mat-step >
+        <ng-template matStepLabel>Write your test fixture and tests</ng-template>
+        <Label>Follow below example.</Label>
+        <pre><code>{{testExample}}</code></pre>
+      </mat-step>
+    </mat-vertical-stepper>
+    
   </mat-tab>
 </mat-tab-group>
