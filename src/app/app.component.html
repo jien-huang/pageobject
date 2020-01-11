@@ -3,23 +3,22 @@
     <mat-icon>more_vert</mat-icon>
   </button>
   <mat-menu #main="matMenu">
-    <button mat-menu-item (click)="download_page_objects()">Download Page Objects</button>
+    <button mat-menu-item (click)="download_page_objects()">Download All Page Objects</button>
     <button mat-menu-item (click)="save_options()">Save Options</button>
-    <button mat-menu-item (click)="load_options()">Download Framework</button>
-    <button mat-menu-item (click)="to_my_home()">More Infomation ...</button>
+    <!-- <button mat-menu-item (click)="load_options()">Download Framework</button> -->
+    <!-- <button mat-menu-item (click)="to_my_home()">More Infomation ...</button> -->
   </mat-menu>
   <span>Welcome to Automation-Test</span>
   <div class="spacer"></div>
-  <button mat-raised-button (click)="to_my_home()">
+  <!-- <button mat-raised-button (click)="to_my_home()">
     <mat-icon>cloud_download</mat-icon>
   </button>
-  <p>&nbsp;</p>
+  <p>&nbsp;</p> -->
 </div>
 
 <mat-tab-group>
   <mat-tab>
     <ng-template mat-tab-label>
-      <!-- <mat-icon >cloud_download</mat-icon> -->
       Generated Contents
     </ng-template>
     <mat-expansion-panel *ngFor="let page of pages">
@@ -44,7 +43,7 @@
       <mat-form-field class="width-80pc">
         <input matInput placeholder="Name" [(ngModel)]="page.name">
       </mat-form-field>
-
+      <!-- TODO put a table here -->
       <mat-form-field class="width-100pc">
         <textarea matInput placeholder="Script" [(ngModel)]="page.script" cdkTextareaAutosize cdkAutosizeMinRows="2" cdkAutosizeMaxRows="16"></textarea>
           

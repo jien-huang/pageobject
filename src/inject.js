@@ -54,7 +54,6 @@ async function getPageObjects() {
         var str_array = onePage.url.split('/')
         var _className = ''
         for (var i = 0; i < str_array.length; i++) {
-            //TODO consider add a list of can_be_ignored words here
             if (str_array[i].length === 0) {
                 // remove the hostname
                 continue
