@@ -139,6 +139,7 @@
       }
     }
   },
+  
   "defaultProject": "pageobject",
   "cli": {
     "analytics": false
